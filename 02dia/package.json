@@ -1,0 +1,16 @@
+{
+  "name": "02dia",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "ej1.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "nodemon": "^3.1.14",
+    "prompt-sync": "^4.2.0"
+  }
+}
