@@ -15,8 +15,7 @@ function getAlbondigas(req, res) {
 }
 
 function getAlbondigaById(req, res) {
-    const { id } = req.params;
-    Albondiga.findById(id)
+    Albondiga.findById(req.params.id)
         .then(albondiga => {   
         if (!albondiga) {
             return res.status(404).json({ message: 'Albondiga not found' });
@@ -27,10 +26,9 @@ function getAlbondigaById(req, res) {
 }
 
 function deleteAlbondiga(req, res) {
-    const { id } = req.params;
-    Albondiga.findByIdAndDelete(id)
-        .then(albondiga => {
-            if (!albondiga) {
+    Albondiga.findByIdAndDelete(req.params.id)
+        .then(deletedAlbondiga => {
+            if (!deletedAlbondiga) {
                 return res.status(404).json({ message: 'Albondiga not found' });
             }
             res.json({ message: 'Albondiga deleted' });
