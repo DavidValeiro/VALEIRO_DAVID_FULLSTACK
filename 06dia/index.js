@@ -14,7 +14,7 @@ app.get('/', (req, res) => {
     res.send('Welcome to the Albondigas API');
 });
 
-app.use('/api/albondigas', albondigasRoutes);
+app.use('/albondigas', albondigasRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
