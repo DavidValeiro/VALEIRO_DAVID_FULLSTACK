@@ -52,27 +52,32 @@ async function updateOrder(req, res) {
     const { user, products, orderStatus } = req.body;
     const totalPrice = await calculateTotalPrice(products);
     const oldOrder = await Order.findById(req.params.id);
-    const oldProductQuantityMap = {};
-    oldOrder.products.forEach(item => {
-        oldProductQuantityMap[item.product.toString()] = item.quantity;
-    });
-
     if (!oldOrder) {
         return res.status(404).json({ message: 'Order not found' });
     }
-    oldOrder.products.map(item => Product.findByIdAndUpdate(item.product, { $inc: { stock: item.quantity } }, { returnDocument: 'after' }));
-    
+    await Promise.all(
+        oldOrder.products.map(item =>
+            Product.findByIdAndUpdate(
+                item.product,
+                { $inc: { stock: item.quantity } },
+                { returnDocument: 'after' }
+            )
+        )
+    );
     Order.findByIdAndUpdate(req.params.id, { user, products, totalPrice, orderStatus }, { returnDocument: 'after' })
         .then(updatedOrder => {
             if (!updatedOrder) {
                 return res.status(404).json({ message: 'Order not found' });
             }
-            updatedOrder.products.map(item => {
-                const oldQuantity = oldProductQuantityMap[item.product.toString()] || 0;
-                const quantityDiff = item.quantity - oldQuantity;
-                return Product.findByIdAndUpdate(item.product, { $inc: { stock: -quantityDiff } }, { returnDocument: 'after' });
-            });
-            return updatedOrder;
+            return Promise.all(
+                updatedOrder.products.map(item =>
+                    Product.findByIdAndUpdate(
+                        item.product,
+                        { $inc: { stock: -item.quantity } },
+                        { returnDocument: 'after' }
+                    )
+                )
+            ).then(() => updatedOrder);
         })
         .then(order => res.status(201).json(order))
         .catch(err => res.status(500).json({ message: err.message }));
