@@ -7,7 +7,6 @@ connectDB(MONGODB_URI).catch((err) =>
     console.error("Error de conexión a MongoDB:", err.message)
 );      
 
-
 if (require.main === module) {
     const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => console.log(`API escuchando en http://localhost:${PORT}`));
