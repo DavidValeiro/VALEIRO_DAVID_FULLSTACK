@@ -4,7 +4,8 @@ env.config();
 const MONGODB_URI = process.env.MONGODB_URI;
 
 console.log("MONGODB_URI:", MONGODB_URI);
-async function connectDB(MONGODB_URI) {
+
+async function connectDB() {
   if (!MONGODB_URI) {
     throw new Error("Falta la variable de entorno MONGODB_URI");
   }
