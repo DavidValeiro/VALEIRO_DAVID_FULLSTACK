@@ -1,5 +1,8 @@
 const express = require('express');
 const cors = require('cors');
+const dns = require('node:dns/promises');
+
+dns.setServers(['8.8.8.8', '8.8.4.4', '1.1.1.1']); 
 
 const productRoutes = require('./routes/products');
 const userRoutes = require('./routes/users');
