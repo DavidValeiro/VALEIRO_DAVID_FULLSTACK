@@ -12,4 +12,4 @@ if (require.main === module) {
     app.listen(PORT, () => console.log(`API escuchando en http://localhost:${PORT}`));
 }
 
-module.exports = app;
+console.log("Servidor iniciado. Esperando solicitudes...");
