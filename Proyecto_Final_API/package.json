@@ -14,14 +14,13 @@
     "dns": "^0.1.2",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
-    "fs": "^0.0.1-security",
     "mongodb": "^7.5.0",
     "mongoose": "^9.7.4",
     "node-gyp": "^13.0.1",
     "nvm": "^0.0.4",
     "path": "^0.12.7",
     "rebuild": "^0.1.2",
-    "vercel": "56.4.1"
+    "vercel": "^54.17.3"
   },
   "allowScripts": {
     "esbuild@0.27.0": true,
