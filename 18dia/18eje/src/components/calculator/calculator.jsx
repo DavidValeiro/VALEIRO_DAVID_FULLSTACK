@@ -1,6 +1,7 @@
 import './calculator.css'
 import Button from '../button/button'
 import { useState } from 'react'
+import { evaluate } from 'mathjs'
 
 function Calculator() {
     const [displayValue, setDisplayValue] = useState('0');
@@ -33,14 +34,14 @@ function Calculator() {
             if (buttonValue === '='){
                 let operation = displayValue;
                 try {
-                    let result = eval(operation);
+                    let result = evaluate(operation);
                     setDisplayValue(result.toString());
                     console.log('Result:', result);
                 }
                 catch (error) {
                     setDisplayValue('Error');
                 }
-            };
+            }
 
             if (numberArray.includes(buttonValue)) {
                 setDisplayValue((prev) => (prev === '0' ? buttonValue : prev + buttonValue));
