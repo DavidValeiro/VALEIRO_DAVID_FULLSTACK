@@ -33,6 +33,10 @@ function Calculator() {
 
             if (buttonValue === '='){
                 let operation = displayValue;
+                if (operation.includes('%')) {
+                    let percent = '/100*';
+                    operation = operation.replace(/%/g, percent);
+                }
                 try {
                     let result = evaluate(operation);
                     setDisplayValue(result.toString());
