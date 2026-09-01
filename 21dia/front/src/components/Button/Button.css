@@ -1,0 +1,38 @@
+.button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 25px !important;
+  background: linear-gradient(145deg, #2a2a2a, #1f1f1f);
+  box-shadow: 
+    inset 2px 2px 5px rgba(255, 255, 255, 0.06),
+    inset -2px -2px 5px rgba(0, 0, 0, 0.45),
+    5px 5px 15px rgba(0, 0, 0, 0.5),
+    -5px -5px 15px rgba(255, 255, 255, 0.03);
+  color: #fff;
+  font-family: "Raleway", sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.08), -1px -1px 0 rgba(0, 0, 0, 0.35), 2px 2px 6px rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none !important;
+}
+
+.button:hover {
+  box-shadow: 
+    inset 2px 2px 5px rgba(255, 255, 255, 0.08),
+    inset -2px -2px 5px rgba(0, 0, 0, 0.55),
+    3px 3px 8px rgba(0, 0, 0, 0.45),
+    -3px -3px 8px rgba(255, 255, 255, 0.04);
+  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.12), -1px -1px 0 rgba(0, 0, 0, 0.4), 3px 3px 8px rgba(0, 0, 0, 0.4);
+}
+
+.button:active {
+  box-shadow: 
+    inset 4px 4px 8px rgba(0, 0, 0, 0.6),
+    inset -4px -4px 8px rgba(255, 255, 255, 0.06),
+    2px 2px 5px rgba(0, 0, 0, 0.35);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.08), 1px 2px 4px rgba(0, 0, 0, 0.4);
+  color: #141414;
+}
