@@ -18,8 +18,8 @@ const Carrousel = ({ photos }) => {
   };
 
   return (
-    <div className="relative w-full max-w-3xl mx-auto overflow-hidden">
-      {/* Contenedor de imágenes */}
+    <div className="relative w-full max-w-3xl mx-auto overflow-hidden rounded-xl">
+
       <div
         className="flex gap-4 transition-transform duration-500 ease-in-out"
         style={{
@@ -36,7 +36,6 @@ const Carrousel = ({ photos }) => {
         ))}
       </div>
 
-      {/* Botón anterior */}
       <button
         onClick={prevSlide}
         disabled={currentIndex === 0}
@@ -45,7 +44,6 @@ const Carrousel = ({ photos }) => {
         ←
       </button>
 
-      {/* Botón siguiente */}
       <button
         onClick={nextSlide}
         disabled={currentIndex === maxIndex}
