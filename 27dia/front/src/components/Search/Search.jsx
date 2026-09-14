@@ -216,7 +216,7 @@ const Search = () => {
     }
 
     return (
-        <form onSubmit={handleSubmit} className="mx-auto flex w-full max-w-xl flex-col items-center gap-4 rounded-[2rem] border-4 border-slate-950 bg-[#fff8e7] p-6 shadow-[8px_8px_0_#172033]">
+        <form onSubmit={handleSubmit} className="mx-auto flex w-full max-w-xl flex-col items-center gap-4 rounded-xl border-4 border-slate-950 bg-[#fff8e7] p-6 shadow-[8px_8px_0_#172033]">
             <input
                 type="text"
                 value={searchTerm}
@@ -234,7 +234,7 @@ const Search = () => {
                     {searchResults.map((pokemon, index) => (
                 <div key={`${pokemon.id}-evolution`} className="flex w-full flex-col items-center">
                     {index > 0 && (
-                        <div className="my-5 w-full max-w-sm rounded-[1.5rem] border-4 border-slate-950 bg-[#fff8e7] px-5 py-4 text-center shadow-[6px_6px_0_#172033]">
+                        <div className="my-5 w-full max-w-sm rounded-3xl border-4 border-slate-950 bg-[#fff8e7] px-5 py-4 text-center shadow-[6px_6px_0_#172033]">
                             <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">
                                 Método de evolución
                             </p>
@@ -258,7 +258,7 @@ const Search = () => {
                             openModal(pokemon);
                         }
                     }}
-                    className="pokemon-card group w-full max-w-sm cursor-pointer overflow-hidden rounded-[2rem] border-4 border-slate-950 bg-[#fff8e7] shadow-[8px_8px_0_#172033] transition duration-200 hover:-translate-y-1 hover:shadow-[12px_12px_0_#172033]"
+                    className="pokemon-card group w-full max-w-sm cursor-pointer overflow-hidden rounded-4xl border-4 border-slate-950 bg-[#fff8e7] shadow-[8px_8px_0_#172033] transition duration-200 hover:-translate-y-1 hover:shadow-[12px_12px_0_#172033]"
                 >
                     <div className="flex items-start justify-between border-b-4 border-slate-950 bg-[#ffcb05] px-5 py-4">
                         <div>
@@ -297,7 +297,7 @@ const Search = () => {
                 >
                     <div
                         onClick={(e) => e.stopPropagation()}
-                        className="relative max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-[2rem] border-4 border-slate-950 bg-[#fff8e7] shadow-[12px_12px_0_#172033] scrollbar-thin"
+                        className="relative max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-4xl border-4 border-slate-950 bg-[#fff8e7] shadow-[12px_12px_0_#172033] scrollbar-thin"
                     >
                         <div className="sticky top-0 z-30 flex items-center justify-between border-b-4 border-slate-950 bg-[#ffcb05] px-6 py-5">
                             <div>
