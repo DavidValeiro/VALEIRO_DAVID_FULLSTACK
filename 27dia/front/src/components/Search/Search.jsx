@@ -297,7 +297,7 @@ const Search = () => {
                 >
                     <div
                         onClick={(e) => e.stopPropagation()}
-                        className="relative max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-[2rem] border-4 border-slate-950 bg-[#fff8e7] shadow-[12px_12px_0_#172033] scrollbar-hidden"
+                        className="relative max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-4xl border-4 border-slate-950 bg-[#fff8e7] shadow-[12px_12px_0_#172033] scrollbar-hidden"
                     >
                         <div className="sticky top-0 z-30 flex items-center justify-between border-b-4 border-slate-950 bg-[#ffcb05] px-6 py-5">
                             <div>
