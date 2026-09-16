@@ -19,3 +19,9 @@
 .scrollbar-thin::-webkit-scrollbar-thumb:hover {
   background: #ffd740;
 }
+.scrollbar-hidden {
+  scrollbar-width: none;
+}
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}

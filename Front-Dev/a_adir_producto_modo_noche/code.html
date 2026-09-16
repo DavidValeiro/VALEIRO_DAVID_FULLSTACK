@@ -1,0 +1,283 @@
+<!DOCTYPE html><html class="dark" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>HEPTIC | Add Product</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+        body {
+            font-family: 'Hanken Grotesk', sans-serif;
+            background-color: #131314;
+            color: #e5e2e3;
+        }
+
+        /* Neumorphic Shadows */
+        .neu-flat {
+            background: #131314;
+            box-shadow: 4px 4px 10px #000000, -2px -2px 6px #2A2A2B;
+        }
+
+        .neu-pressed {
+            background: #131314;
+            box-shadow: inset 4px 4px 10px #000000, inset -2px -2px 6px #2A2A2B;
+        }
+
+        .neu-button-raised {
+            background: #131314;
+            box-shadow: 4px 4px 10px #000000, -2px -2px 6px #2A2A2B;
+            transition: all 0.2s ease;
+        }
+
+        .neu-button-raised:active {
+            box-shadow: inset 2px 2px 5px #000000, inset -1px -1px 3px #2A2A2B;
+        }
+
+        /* Input styling overrides */
+        .neu-input {
+            border: none !important;
+            outline: none !important;
+        }
+        
+        .neu-input:focus {
+            box-shadow: inset 4px 4px 10px #000000, inset -2px -2px 6px #2A2A2B, 0 0 0 1px #f49638 !important;
+        }
+
+        /* Hide scrollbars for clean hardware feel */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #131314;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2A2A2B;
+            border-radius: 10px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#dac2b1",
+                        "secondary": "#c8c6c7",
+                        "tertiary-container": "#00bce3",
+                        "on-tertiary-fixed": "#001f28",
+                        "secondary-container": "#49494a",
+                        "on-secondary-fixed-variant": "#474647",
+                        "on-background": "#e5e2e3",
+                        "on-surface": "#e5e2e3",
+                        "on-error": "#690005",
+                        "surface-dim": "#131314",
+                        "secondary-fixed": "#e5e2e3",
+                        "background": "#131314",
+                        "surface-container-high": "#2a2a2b",
+                        "on-secondary-fixed": "#1b1b1c",
+                        "primary-fixed-dim": "#ffb779",
+                        "primary-fixed": "#ffdcc1",
+                        "error": "#ffb4ab",
+                        "primary-container": "#f49638",
+                        "inverse-surface": "#e5e2e3",
+                        "surface-tint": "#ffb779",
+                        "on-tertiary": "#003542",
+                        "surface-variant": "#353436",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#004e5f",
+                        "on-tertiary-container": "#004757",
+                        "tertiary": "#4ad8ff",
+                        "on-secondary-container": "#bab8b9",
+                        "inverse-on-surface": "#313031",
+                        "tertiary-fixed-dim": "#43d6fe",
+                        "surface-bright": "#39393a",
+                        "surface-container": "#201f20",
+                        "surface-container-highest": "#353436",
+                        "on-primary": "#4c2700",
+                        "outline": "#a28d7d",
+                        "on-secondary": "#303031",
+                        "inverse-primary": "#8e4e00",
+                        "on-primary-fixed-variant": "#6c3a00",
+                        "error-container": "#93000a",
+                        "surface-container-low": "#1c1b1c",
+                        "surface": "#131314",
+                        "secondary-fixed-dim": "#c8c6c7",
+                        "on-primary-container": "#633500",
+                        "outline-variant": "#544436",
+                        "tertiary-fixed": "#b4ebff",
+                        "on-primary-fixed": "#2e1500",
+                        "primary": "#ffb97c",
+                        "surface-container-lowest": "#0e0e0f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "sm": "12px",
+                        "margin-mobile": "16px",
+                        "xl": "64px",
+                        "xs": "4px",
+                        "md": "24px",
+                        "lg": "40px",
+                        "base": "8px",
+                        "margin-desktop": "48px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Hanken Grotesk"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "label-sm": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col overflow-x-hidden">
+<!-- Top Navigation Bar -->
+<header class="w-full top-0 sticky z-50 bg-background shadow-[4px_4px_10px_#000000,-2px_-2px_6px_#2A2A2B]">
+<div class="flex justify-between items-center w-full px-margin-desktop py-md max-w-7xl mx-auto">
+<div class="font-display-lg text-display-lg font-bold tracking-tighter text-primary">MOUSIN</div>
+<nav class="hidden md:flex items-center space-x-lg">
+<a class="text-secondary hover:text-primary-fixed-dim transition-colors duration-300 font-body-md text-body-md" href="#">Home</a>
+<a class="text-secondary hover:text-primary-fixed-dim transition-colors duration-300 font-body-md text-body-md" href="#">Catalog</a>
+<a class="text-primary font-bold border-b-2 border-primary py-1 font-body-md text-body-md transition-all" href="#">Add Product</a>
+</nav>
+<div class="flex items-center space-x-md">
+<button class="material-symbols-outlined text-secondary hover:text-primary transition-all p-base neu-button-raised rounded-full">shopping_cart</button>
+<button class="material-symbols-outlined text-secondary hover:text-primary transition-all p-base neu-button-raised rounded-full">account_circle</button>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-grow flex flex-col items-center justify-center py-xl px-margin-mobile md:px-margin-desktop relative">
+<!-- Ambient background glow -->
+<div class="absolute top-1/4 left-1/4 w-96 h-96 bg-primary opacity-5 blur-[120px] rounded-full pointer-events-none"></div>
+<div class="absolute bottom-1/4 right-1/4 w-64 h-64 bg-tertiary opacity-5 blur-[100px] rounded-full pointer-events-none"></div>
+<section class="w-full max-w-3xl">
+<div class="mb-lg">
+<h1 class="font-display-lg text-display-lg text-on-background mb-xs">Inventory Entry</h1>
+<p class="text-secondary font-body-lg text-body-lg">Precision tool for manual peripheral cataloging.</p>
+</div>
+<!-- Bento Card for Form -->
+<div class="neu-flat rounded-xl p-lg grid grid-cols-1 md:grid-cols-12 gap-md relative overflow-hidden">
+<!-- Header Icon Accent -->
+<div class="absolute -top-10 -right-10 w-40 h-40 bg-primary/5 rounded-full blur-2xl"></div>
+<form class="md:col-span-12 space-y-lg relative z-10">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<!-- Product Name -->
+<div class="space-y-sm">
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest px-xs">Product Name</label>
+<input class="w-full p-md rounded-lg neu-pressed neu-input bg-background text-on-background font-body-md text-body-md" placeholder="e.g. Heptic Linear Switch MK-1" type="text">
+</div>
+<!-- Category -->
+<div class="space-y-sm">
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest px-xs">Category</label>
+<select class="w-full p-md rounded-lg neu-pressed neu-input bg-background text-on-background font-body-md text-body-md appearance-none">
+<option>Select Category</option>
+<option>Switches</option>
+<option>Keycaps</option>
+<option>Barebone Kits</option>
+<option>Cables</option>
+</select>
+</div>
+</div>
+<!-- Description -->
+<div class="space-y-sm">
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest px-xs">Full Description</label>
+<textarea class="w-full p-md rounded-lg neu-pressed neu-input bg-background text-on-background font-body-md text-body-md resize-none" placeholder="Technical specifications and material details..." rows="4"></textarea>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<!-- Price -->
+<div class="space-y-sm">
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest px-xs">Unit Price (USD)</label>
+<div class="relative">
+<span class="absolute left-md top-1/2 -translate-y-1/2 text-primary font-bold">$</span>
+<input class="w-full pl-lg p-md rounded-lg neu-pressed neu-input bg-background text-on-background font-body-md text-body-md" placeholder="0.00" step="0.01" type="number">
+</div>
+</div>
+<!-- Image URL -->
+<div class="space-y-sm">
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest px-xs">Reference Image URL</label>
+<div class="relative flex items-center">
+<input class="w-full p-md rounded-lg neu-pressed neu-input bg-background text-on-background font-body-md text-body-md pr-12" placeholder="https://cdn.heptic.com/assets/..." type="url">
+<span class="material-symbols-outlined absolute right-md text-on-surface-variant">link</span>
+</div>
+</div>
+</div>
+<!-- Visual Feedback / Preview Area -->
+<div class="pt-md">
+<div class="w-full h-48 rounded-xl neu-pressed flex flex-col items-center justify-center border border-surface-variant/20 border-dashed group cursor-pointer overflow-hidden">
+<div class="text-center group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-display-lg text-primary/40 mb-sm">image</span>
+<p class="text-on-surface-variant font-label-sm text-label-sm">PREVIEW GENERATED FROM URL</p>
+</div>
+<!-- Mock image element for the injection pipeline -->
+<div class="hidden">
+<img data-alt="A high-end mechanical keyboard switch, isolated on a dark matte background. The switch features a transparent housing and a vibrant orange stem, meticulously detailed with metallic contacts visible. Soft professional studio lighting from the top-left creates subtle highlights and deep, velvety shadows. The overall aesthetic is industrial, precise, and luxurious, matching a dark-mode technical hardware interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA424B33LFCn_L-iM6thd8q6ymhCnRGMbcBwnjNqxhnpt-ju7ULeGkCCdAOkV_wraALedq3HFh23FH1gbVg5wVpYVm27xdB7hWzxdVexGJvAGyCZbp7jhwoeoZQu1FfkqWUvQXM0u2PnSoHZN5KvagGKeha8CVoHl3wBMMpRm0xHIXMgLz5t03GBrcoViZ9CSqEXC1ZqaP9FQtvmxTFV_6ZxWGHCbMgqh7Zkg3aviREu_WD6w13PWb6G3N1rUcFZxayxf6DMsK3kOI">
+</div>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex flex-col md:flex-row items-center gap-md pt-lg">
+<button class="w-full md:flex-[2] bg-primary-container text-on-primary font-headline-md text-headline-md py-md rounded-xl shadow-lg active:scale-[0.98] transition-all hover:brightness-110 flex items-center justify-center gap-sm" type="submit">
+<span class="material-symbols-outlined">save</span>
+                            Save Product
+                        </button>
+<button class="w-full md:flex-[1] neu-button-raised text-secondary font-headline-md text-headline-md py-md rounded-xl hover:text-error transition-all flex items-center justify-center gap-sm" type="button">
+<span class="material-symbols-outlined">delete_sweep</span>
+                            Discard
+                        </button>
+</div>
+</form>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full bg-surface-container border-t border-surface-variant mt-xl">
+<div class="flex flex-col md:flex-row justify-between items-center px-margin-desktop py-lg w-full max-w-7xl mx-auto">
+<div class="font-headline-md text-headline-md font-bold text-on-background mb-md md:mb-0">MOUSIN</div>
+<div class="flex flex-wrap justify-center gap-lg mb-md md:mb-0">
+<a class="text-on-surface-variant font-body-md text-body-md hover:text-primary transition-colors" href="#">Contact</a>
+<a class="text-on-surface-variant font-body-md text-body-md hover:text-primary transition-colors" href="#">Shipping</a>
+<a class="text-on-surface-variant font-body-md text-body-md hover:text-primary transition-colors" href="#">Privacy</a>
+<a class="text-on-surface-variant font-body-md text-body-md hover:text-primary transition-colors" href="#">Support</a>
+</div>
+<p class="text-on-surface-variant font-body-md text-body-md text-center">© 2024 MOUSIN Peripherals. All rights reserved.</p>
+</div>
+</footer>
+<script>
+        // Micro-interactions for form feedback
+        document.querySelectorAll('.neu-input').forEach(input => {
+            input.addEventListener('focus', () => {
+                input.parentElement.querySelector('label')?.classList.add('text-primary');
+            });
+            input.addEventListener('blur', () => {
+                input.parentElement.querySelector('label')?.classList.remove('text-primary');
+            });
+        });
+
+        // Simple button active state simulation for Neumorphism
+        const saveBtn = document.querySelector('button[type="submit"]');
+        saveBtn.addEventListener('mousedown', () => {
+            saveBtn.style.boxShadow = 'inset 4px 4px 10px rgba(0,0,0,0.4)';
+        });
+        saveBtn.addEventListener('mouseup', () => {
+            saveBtn.style.boxShadow = '';
+        });
+    </script>
+
+
+</body></html>

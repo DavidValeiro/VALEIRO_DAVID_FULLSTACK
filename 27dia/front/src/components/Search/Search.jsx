@@ -297,7 +297,7 @@ const Search = () => {
                 >
                     <div
                         onClick={(e) => e.stopPropagation()}
-                        className="relative max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-[2rem] border-4 border-slate-950 bg-[#fff8e7] shadow-[12px_12px_0_#172033] scrollbar-thin"
+                        className="relative max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-[2rem] border-4 border-slate-950 bg-[#fff8e7] shadow-[12px_12px_0_#172033] scrollbar-hidden"
                     >
                         <div className="sticky top-0 z-30 flex items-center justify-between border-b-4 border-slate-950 bg-[#ffcb05] px-6 py-5">
                             <div>
@@ -340,7 +340,7 @@ const Search = () => {
 
                         {pokemonSpecies && (
                             <div className="border-b-2 border-slate-200 px-6 py-6">
-                                <p className="mb-5 text-xs font-black uppercase tracking-[0.2em] text-slate-500">Descripción</p>
+                                <p className="mb-3 text-xs font-black uppercase tracking-[0.2em] text-slate-500">Descripción</p>
                                 <p className="text-sm font-bold leading-relaxed text-slate-800">
                                     {pokemonSpecies.flavor_text_entries?.find((e) => e.language.name === 'es')?.flavor_text?.replace(/\n|\f/g, ' ') || pokemonSpecies.flavor_text_entries?.find((e) => e.language.name === 'en')?.flavor_text?.replace(/\n|\f/g, ' ')}
                                 </p>
@@ -348,7 +348,7 @@ const Search = () => {
                         )}
 
                         <div className="border-b-2 border-slate-200 px-6 py-6">
-                            <p className="mb-6 text-xs font-black uppercase tracking-[0.2em] text-slate-500">Tipos</p>
+                            <p className="mb-3 text-xs font-black uppercase tracking-[0.2em] text-slate-500">Tipos</p>
                             <div className="flex flex-wrap gap-2">
                                 {selectedPokemon.types.map((type) => (
                                     <span key={type.type.name} className={`rounded-lg border-2 border-slate-950 ${typeColor(type.type.name)} px-3 py-1 text-xs font-black uppercase text-white shadow-[2px_2px_0_#172033]`}>
@@ -359,7 +359,7 @@ const Search = () => {
                         </div>
 
                         <div className="border-b-2 border-slate-200 px-6 py-6">
-                            <p className="mb-6 text-xs font-black uppercase tracking-[0.2em] text-slate-500">Estadísticas</p>
+                            <p className="mb-3 text-xs font-black uppercase tracking-[0.2em] text-slate-500">Estadísticas</p>
                             <div className="flex flex-col gap-4">
                                 {selectedPokemon.stats.map((s) => (
                                     <div key={s.stat.name} className="flex items-center gap-3">
@@ -375,7 +375,7 @@ const Search = () => {
                         </div>
 
                         <div className="border-b-2 border-slate-200 px-6 py-6">
-                            <p className="mb-6 text-xs font-black uppercase tracking-[0.2em] text-slate-500">Datos Físicos</p>
+                            <p className="mb-3 text-xs font-black uppercase tracking-[0.2em] text-slate-500">Datos Físicos</p>
                             <div className="grid grid-cols-2 gap-3">
                                 <div className="rounded-xl border-2 border-slate-950 bg-white px-3 py-2 text-center shadow-[2px_2px_0_#172033]">
                                     <p className="text-[10px] font-black uppercase text-slate-500">Altura</p>
@@ -407,7 +407,7 @@ const Search = () => {
                         </div>
 
                         <div className="border-b-2 border-slate-200 px-6 py-6">
-                            <p className="mb-6 text-xs font-black uppercase tracking-[0.2em] text-slate-500">Habilidades</p>
+                            <p className="mb-3 text-xs font-black uppercase tracking-[0.2em] text-slate-500">Habilidades</p>
                             <div className="flex flex-wrap gap-2">
                                 {selectedPokemon.abilities.map((a) => (
                                     <span key={a.ability.name} className={`rounded-lg border-2 border-slate-950 px-3 py-1 text-xs font-black shadow-[2px_2px_0_#172033] ${a.is_hidden ? 'border-dashed bg-slate-200 text-slate-600' : 'bg-white text-slate-950'}`}>
@@ -420,7 +420,7 @@ const Search = () => {
 
                         {pokemonSpecies && (
                             <div className="border-b-2 border-slate-200 px-6 py-6">
-                                <p className="mb-6 text-xs font-black uppercase tracking-[0.2em] text-slate-500">Reproducción</p>
+                                <p className="mb-3 text-xs font-black uppercase tracking-[0.2em] text-slate-500">Reproducción</p>
                                 <div className="grid grid-cols-2 gap-3">
                                     <div className="rounded-xl border-2 border-slate-950 bg-white px-3 py-2 text-center shadow-[2px_2px_0_#172033]">
                                         <p className="text-[10px] font-black uppercase text-slate-500">Género</p>
@@ -446,7 +446,7 @@ const Search = () => {
 
                         {pokemonSpecies && (
                             <div className="border-b-2 border-slate-200 px-6 py-6">
-                                <p className="mb-6 text-xs font-black uppercase tracking-[0.2em] text-slate-500">Captura y Crecimiento</p>
+                                <p className="mb-3 text-xs font-black uppercase tracking-[0.2em] text-slate-500">Captura y Crecimiento</p>
                                 <div className="grid grid-cols-2 gap-3">
                                     <div className="rounded-xl border-2 border-slate-950 bg-white px-3 py-2 text-center shadow-[2px_2px_0_#172033]">
                                         <p className="text-[10px] font-black uppercase text-slate-500">Tasa Captura</p>
@@ -473,7 +473,7 @@ const Search = () => {
 
                         {selectedPokemon.held_items?.length > 0 && (
                             <div className="border-b-2 border-slate-200 px-6 py-6">
-                                <p className="mb-6 text-xs font-black uppercase tracking-[0.2em] text-slate-500">Objetos Sostenidos</p>
+                                <p className="mb-3 text-xs font-black uppercase tracking-[0.2em] text-slate-500">Objetos Sostenidos</p>
                                 <div className="flex flex-wrap gap-2">
                                     {selectedPokemon.held_items.map((hi) => (
                                         <span key={hi.item.name} className="rounded-lg border-2 border-slate-950 bg-white px-3 py-1 text-xs font-black shadow-[2px_2px_0_#172033]">
@@ -487,7 +487,7 @@ const Search = () => {
 
                         {selectedPokemon.moves?.length > 0 && (
                             <div className="border-b-2 border-slate-200 px-6 py-6">
-                                <p className="mb-6 text-xs font-black uppercase tracking-[0.2em] text-slate-500">Movimientos ({selectedPokemon.moves.length})</p>
+                                <p className="mb-3 text-xs font-black uppercase tracking-[0.2em] text-slate-500">Movimientos ({selectedPokemon.moves.length})</p>
                                 <div className="max-h-40 overflow-y-auto rounded-xl border-2 border-slate-950 bg-white p-3 shadow-[2px_2px_0_#172033] scrollbar-thin">
                                     <div className="flex flex-wrap gap-1">
                                         {selectedPokemon.moves.map((m) => (
