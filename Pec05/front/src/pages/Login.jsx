@@ -102,9 +102,9 @@ function Login() {
                   </button>
                 </form>
 
-                <div className="flex min-h-0 flex-1 items-center justify-center overflow-hidden">
+                <div className="flex min-h-0 flex-1 items-center justify-center overflow-hidden p-6">
                   <div
-                    className="h-72 w-72 rounded-lg shadow-[inset_16px_16px_28px_rgba(23,32,51,0.7),inset_-14px_-14px_24px_rgba(255,255,255,0.4)]"
+                    className="aspect-square max-h-full max-w-full rounded-lg shadow-[inset_16px_16px_28px_rgba(23,32,51,0.7),inset_-14px_-14px_24px_rgba(255,255,255,0.4)]"
                     role="img"
                     aria-label="Charmander aplastado contra el cristal"
                     style={{
