@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import Register from '../components/Register/Register'
 import { api, setToken } from '../api'
 
 function Login() {
@@ -7,7 +8,29 @@ function Login() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [flipped, setFlipped] = useState(false)
+  const [scale, setScale] = useState(1)
+  const wrapRef = useRef(null)
   const navigate = useNavigate()
+
+  useEffect(() => {
+    const el = wrapRef.current
+    if (!el) return
+    const compute = () => {
+      const vh = window.innerHeight
+      const vw = window.innerWidth
+      const s = Math.min(1, (vh - 96) / el.offsetHeight, (vw - 48) / el.offsetWidth)
+      setScale(Number(Math.max(0.4, s).toFixed(3)))
+    }
+    compute()
+    const ro = new ResizeObserver(compute)
+    ro.observe(el)
+    window.addEventListener('resize', compute)
+    return () => {
+      ro.disconnect()
+      window.removeEventListener('resize', compute)
+    }
+  }, [])
 
   async function handleSubmit(e) {
     e.preventDefault()
@@ -25,53 +48,97 @@ function Login() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-100">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8">
-        <h1 className="text-2xl font-bold text-slate-800 mb-1">PEC05 · Usuarios API</h1>
-        <p className="text-sm text-slate-500 mb-6">Inicia sesión para gestionar usuarios</p>
+    <div className="flex h-screen w-screen items-center justify-center overflow-hidden bg-[#f1eee6]">
+      <div ref={wrapRef} className="flex flex-col items-center" style={{ transform: `scale(${scale})` }}>
+        <div className="deck-stage relative">
+          <div className="grid" style={{ gridTemplateAreas: '"deck"' }}>
+            <div className={`deck-card ${flipped ? 'deck-back' : 'deck-front'}`}>
+              <div className="flex h-full w-full max-w-md flex-col overflow-hidden rounded-4xl border-4 border-slate-950 bg-[#fff8e7] shadow-[0_18px_40px_rgba(23,32,51,0.25)]">
+                <div className="flex items-center justify-between border-b-4 border-slate-950 bg-[#ffcb05] px-6 py-5">
+                  <div>
+                    <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">PEC05</p>
+                    <h1 className="text-3xl font-black uppercase leading-none text-slate-950">Usuarios API</h1>
+                    <p className="mt-1 text-sm font-black text-slate-700">Inicia sesión para gestionar usuarios</p>
+                  </div>
+                  <span className="rounded-full border-2 border-slate-950 bg-white px-3 py-1 text-sm font-black text-slate-950">login</span>
+                </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Email</label>
-            <input
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="david.valeiro@example.com"
-              className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+                <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-6">
+                  <div>
+                    <label className="mb-1 block text-xs font-black uppercase tracking-[0.2em] text-slate-500">Email</label>
+                    <input
+                      type="email"
+                      required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="david.valeiro@example.com"
+                      className="w-full rounded-xl border-4 border-slate-950 bg-white px-5 py-3 font-black shadow-[4px_4px_0_#172033] placeholder:text-slate-400 focus:outline-none focus:ring-4 focus:ring-[#ffcb05]"
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-1 block text-xs font-black uppercase tracking-[0.2em] text-slate-500">Contraseña</label>
+                    <input
+                      type="password"
+                      required
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="••••••••"
+                      className="w-full rounded-xl border-4 border-slate-950 bg-white px-5 py-3 font-black shadow-[4px_4px_0_#172033] placeholder:text-slate-400 focus:outline-none focus:ring-4 focus:ring-[#ffcb05]"
+                    />
+                  </div>
+
+                  {error && (
+                    <p className="rounded-xl border-2 border-slate-950 bg-[#e85d4a] px-4 py-3 text-sm font-black text-white shadow-[3px_3px_0_#172033]">
+                      {error}
+                    </p>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full cursor-pointer rounded-xl border-4 border-slate-950 bg-[#ffcb05] px-5 py-3 text-lg font-black uppercase text-slate-950 shadow-[4px_4px_0_#172033] transition hover:-translate-y-1 hover:bg-[#ffd740] hover:shadow-[6px_6px_0_#172033] disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:shadow-[4px_4px_0_#172033]"
+                  >
+                    {loading ? 'Entrando…' : 'Iniciar sesión'}
+                  </button>
+                </form>
+
+                <div className="flex min-h-0 flex-1 items-center justify-center overflow-hidden">
+                  <div
+                    className="h-72 w-72 rounded-lg shadow-[inset_16px_16px_28px_rgba(23,32,51,0.7),inset_-14px_-14px_24px_rgba(255,255,255,0.4)]"
+                    role="img"
+                    aria-label="Charmander aplastado contra el cristal"
+                    style={{
+                      backgroundImage: 'url(/window-charmander.jpg)',
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                    }}
+                  />
+                </div>
+
+                <p className="border-t-4 border-slate-950 bg-white px-6 py-3 text-center text-xs font-black tracking-[0.2em] text-slate-500">
+                  Prueba: david.valeiro@example.com / pass123
+                </p>
+              </div>
+            </div>
+
+            <div className={`deck-card ${flipped ? 'deck-front' : 'deck-back'}`}>
+              <Register />
+            </div>
           </div>
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Contraseña</label>
-            <input
-              type="password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
-              className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
 
-          {error && (
-            <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
-              {error}
-            </p>
-          )}
+          <div
+            className={`pointer-events-none absolute -bottom-10 left-1/2 -translate-x-1/2 rounded-[100%] bg-slate-950 blur-xl transition-all duration-700 ease-out ${
+              flipped ? 'h-8 w-[72%] opacity-40' : 'h-6 w-[58%] opacity-30'
+            }`}
+          />
+        </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-semibold py-2 rounded-lg transition"
-          >
-            {loading ? 'Entrando…' : 'Iniciar sesión'}
-          </button>
-        </form>
-
-        <p className="mt-6 text-xs text-slate-400">
-          Prueba: david.valeiro@example.com / pass123
-        </p>
+        <button
+          onClick={() => setFlipped((f) => !f)}
+          className="mt-12 cursor-pointer rounded-xl border-4 border-slate-950 bg-white px-6 py-3 text-sm font-black uppercase tracking-[0.15em] text-slate-950 shadow-[4px_4px_0_#172033] transition hover:-translate-y-1 hover:bg-[#ffcb05] hover:shadow-[6px_6px_0_#172033]"
+        >
+          {flipped ? '← Ir a iniciar sesión' : 'Ir a crear cuenta →'}
+        </button>
       </div>
     </div>
   )

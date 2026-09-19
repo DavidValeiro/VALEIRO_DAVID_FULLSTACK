@@ -4,7 +4,12 @@ const userSchema = new mongoose.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    is_admin: { type: Boolean, default: false }
+    is_admin: { type: Boolean, default: false },
+    pokemon: {
+        id: { type: Number },
+        name: { type: String },
+        shiny: { type: Boolean, default: false }
+    }
 }, {
     timestamps: true
 });

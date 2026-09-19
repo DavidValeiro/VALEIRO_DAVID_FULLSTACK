@@ -48,6 +48,8 @@ export const api = {
   getUserById: (id) => request(`/users/${id}`),
   createUser: (user) =>
     request('/users', { method: 'POST', body: JSON.stringify(user) }),
+  register: (user) =>
+    request('/users/register', { method: 'POST', body: JSON.stringify(user) }),
   updateUser: (id, user) =>
     request(`/users/${id}`, { method: 'PUT', body: JSON.stringify(user) }),
   deleteUser: (id) => request(`/users/${id}`, { method: 'DELETE' }),

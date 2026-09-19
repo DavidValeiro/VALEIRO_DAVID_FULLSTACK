@@ -3,10 +3,33 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 function createUser(req, res) {
-    const { name, email, password, is_admin } = req.body;
+    const { name, email, password, is_admin, pokemon } = req.body;
     bcrypt.hash(password, 10)
         .then(hashedPassword => {
-            const newUser = new User({ name, email, password: hashedPassword, is_admin });
+            const newUser = new User({ name, email, password: hashedPassword, is_admin, pokemon });
+            return newUser.save();
+        })
+        .then(user => {
+            user.password = undefined;
+            res.status(201).json(user);
+        })
+        .catch(err => res.status(400).json({ message: err.message }));
+}
+
+function registerUser(req, res) {
+    const { name, email, password, pokemon } = req.body;
+    if (!name || !email || !password) {
+        return res.status(400).json({ message: 'Nombre, email y contraseña son obligatorios' });
+    }
+    bcrypt.hash(password, 10)
+        .then(hashedPassword => {
+            const newUser = new User({
+                name,
+                email,
+                password: hashedPassword,
+                is_admin: false,
+                pokemon: pokemon || { id: 132, name: 'ditto', shiny: false }
+            });
             return newUser.save();
         })
         .then(user => {
@@ -96,6 +119,7 @@ function deleteUser(req, res) {
 
 module.exports = {
     createUser,
+    registerUser,
     loginUser,
     getUsers,
     getUserById,

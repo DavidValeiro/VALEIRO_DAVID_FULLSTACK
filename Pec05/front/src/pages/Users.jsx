@@ -1,20 +1,47 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar/Navbar'
 import UserCard from '../components/UserCard/UserCard'
 import UserForm from '../components/UserForm/UserForm'
+import Toast from '../components/Toast/Toast'
 import { api, clearToken, getIsAdmin } from '../api'
+
+const CREATE_CLOSE_MS = 450
 
 function Users() {
   const isAdmin = getIsAdmin()
   const [users, setUsers] = useState([])
   const [loading, setLoading] = useState(true)
-  const [message, setMessage] = useState('')
-  const [error, setError] = useState('')
+  const [toast, setToast] = useState(null)
   const [showCreate, setShowCreate] = useState(false)
+  const [createClosing, setCreateClosing] = useState(false)
+  const [editId, setEditId] = useState(null)
   const [searchId, setSearchId] = useState('')
   const [searchResult, setSearchResult] = useState(null)
+  const createTimer = useRef(null)
   const navigate = useNavigate()
+
+  function showToast(text, type = 'success') {
+    setToast({ text, type, key: Date.now() })
+  }
+
+  function closeCreate() {
+    if (!showCreate || createClosing) return
+    setCreateClosing(true)
+    createTimer.current = setTimeout(() => {
+      setShowCreate(false)
+      setCreateClosing(false)
+    }, CREATE_CLOSE_MS)
+  }
+
+  function toggleCreate() {
+    if (showCreate) closeCreate()
+    else setShowCreate(true)
+  }
+
+  useEffect(() => {
+    return () => clearTimeout(createTimer.current)
+  }, [])
 
   useEffect(() => {
     loadUsers()
@@ -22,7 +49,6 @@ function Users() {
 
   async function loadUsers() {
     setLoading(true)
-    setError('')
     try {
       const data = await api.getUsers()
       setUsers(data)
@@ -32,73 +58,67 @@ function Users() {
         navigate('/login', { replace: true })
         return
       }
-      setError(err.message)
+      showToast(err.message, 'error')
     } finally {
       setLoading(false)
     }
   }
 
   async function handleCreate(payload) {
-    setError('')
-    setMessage('')
     try {
-      await api.createUser(payload)
-      setShowCreate(false)
-      setMessage('Usuario creado correctamente')
-      loadUsers()
+      const created = await api.createUser(payload)
+      setUsers((prev) => [...prev, created])
+      closeCreate()
+      showToast('Usuario creado correctamente')
     } catch (err) {
-      setError(err.message)
+      showToast(err.message, 'error')
     }
   }
 
-  function handleDeleted() {
-    setMessage('Usuario eliminado')
-    loadUsers()
+  function handleDeleted(id) {
+    setUsers((prev) => prev.filter((u) => u._id !== id))
+    setSearchResult((prev) => (prev && prev._id === id ? null : prev))
+    showToast('Usuario eliminado', 'danger')
   }
 
-  function handleEdited() {
-    setMessage('Usuario actualizado')
-    loadUsers()
+  function handleEdited(updated) {
+    setUsers((prev) => prev.map((u) => (u._id === updated._id ? updated : u)))
+    setSearchResult((prev) => (prev && prev._id === updated._id ? updated : prev))
+    showToast('Guardado correctamente')
   }
 
   async function handleSearch() {
-    setError('')
     setSearchResult(null)
     if (!searchId) return
     try {
       const data = await api.getUserById(searchId)
       setSearchResult(data)
     } catch (err) {
-      setError(err.message)
+      showToast(err.message, 'error')
     }
   }
 
   return (
-    <div className="min-h-screen bg-slate-100">
+    <div className="min-h-screen bg-[#f1eee6]">
       <Navbar onLogout={() => navigate('/login', { replace: true })} />
 
-      <main className="max-w-5xl mx-auto px-4 py-8 space-y-8">
-        {(message || error) && (
-          <div
-            className={`px-4 py-3 rounded-lg text-sm border ${
-              error
-                ? 'bg-red-50 text-red-700 border-red-200'
-                : 'bg-green-50 text-green-700 border-green-200'
-            }`}
-          >
-            {error || message}
+      <main className="mx-auto max-w-5xl space-y-8 px-4 py-8">
+        {toast && (
+          <div className="pointer-events-none fixed right-4 top-24 z-50">
+            <Toast toast={toast} onDismiss={() => setToast(null)} />
           </div>
         )}
 
         {!isAdmin && (
-          <p className="px-4 py-3 rounded-lg text-sm border bg-slate-50 text-slate-600 border-slate-200">
+          <p className="rounded-xl border-4 border-slate-950 bg-[#fff8e7] px-4 py-3 text-sm font-black text-slate-700 shadow-[4px_4px_0_#172033]">
             Tu usuario no es administrador: solo lectura, no puedes crear, editar ni eliminar usuarios.
           </p>
         )}
 
-        <section className="flex flex-wrap gap-4 items-end">
-          <div className="flex-1 min-w-64">
-            <label className="block text-sm font-medium text-slate-700 mb-1">
+        {isAdmin && (
+          <section className="flex flex-wrap items-end gap-4">
+          <div className="min-w-64 flex-1">
+            <label className="mb-1 block text-xs font-black uppercase tracking-[0.2em] text-slate-600">
               Buscar usuario por ID
             </label>
             <input
@@ -106,70 +126,81 @@ function Users() {
               value={searchId}
               onChange={(e) => setSearchId(e.target.value)}
               placeholder="pega un ObjectId"
-              className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-xl border-4 border-slate-950 bg-white px-5 py-3 font-black shadow-[4px_4px_0_#172033] placeholder:text-slate-400 focus:outline-none focus:ring-4 focus:ring-[#ffcb05]"
             />
           </div>
           <button
             onClick={handleSearch}
-            className="bg-slate-800 hover:bg-slate-900 text-white font-medium px-4 py-2 rounded-lg transition"
+            className="cursor-pointer rounded-xl border-4 border-slate-950 bg-[#ffcb05] px-5 py-3 font-black uppercase text-slate-950 shadow-[4px_4px_0_#172033] transition hover:-translate-y-1 hover:bg-[#ffd740] hover:shadow-[6px_6px_0_#172033]"
           >
             Buscar
           </button>
         </section>
+        )}
 
         {searchResult && (
           <section>
-            <h2 className="text-lg font-bold text-slate-800 mb-3">
+            <h2 className="mb-3 text-xl font-black uppercase text-slate-800">
               Resultado de búsqueda
             </h2>
             <UserCard
               user={searchResult}
               canManage={isAdmin}
-              onDeleted={() => {
+              editing={editId === searchResult._id}
+              onStartEdit={setEditId}
+              onEndEdit={() => setEditId(null)}
+              onDeleted={(id) => {
+                handleDeleted(id)
                 setSearchResult(null)
-                handleDeleted()
               }}
               onEdited={handleEdited}
-              onError={setError}
+              onError={(msg) => showToast(msg, 'error')}
             />
           </section>
         )}
 
         <section>
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-lg font-bold text-slate-800">
+          <div className="mb-3 flex items-center justify-between">
+            <h2 className="text-xl font-black uppercase text-slate-800">
               Usuarios ({users.length})
             </h2>
             {isAdmin && (
               <button
-                onClick={() => setShowCreate((v) => !v)}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-lg transition"
+                onClick={toggleCreate}
+                className="cursor-pointer rounded-xl border-4 border-slate-950 bg-[#ffcb05] px-5 py-3 font-black uppercase text-slate-950 shadow-[4px_4px_0_#172033] transition hover:-translate-y-1 hover:bg-[#ffd740] hover:shadow-[6px_6px_0_#172033]"
               >
-                {showCreate ? 'Cancelar' : '+ Crear usuario'}
+                {showCreate && !createClosing ? 'Cancelar' : '+ Crear usuario'}
               </button>
             )}
           </div>
 
           {isAdmin && showCreate && (
-            <div className="bg-white rounded-xl shadow p-4 border border-slate-200 mb-4">
-              <UserForm submitLabel="Crear usuario" onSubmit={handleCreate} />
+            <div className={`despliegue mb-4 ${createClosing ? 'despliegue-cerrar' : ''}`}>
+              <div className="despliegue-inner">
+                <div className="rounded-3xl border-4 border-slate-950 bg-[#fff8e7] p-5 shadow-[6px_6px_0_#172033]">
+                  <UserForm submitLabel="Crear usuario" onSubmit={handleCreate} />
+                </div>
+              </div>
             </div>
           )}
 
           {loading ? (
-            <p className="text-slate-500">Cargando usuarios…</p>
+            <p className="text-sm font-black text-slate-500">Cargando usuarios…</p>
           ) : users.length === 0 ? (
-            <p className="text-slate-500">No hay usuarios.</p>
+            <p className="text-sm font-black text-slate-500">No hay usuarios.</p>
           ) : (
-            <div className="grid gap-4 md:grid-cols-2">
+            <div className="grid items-start gap-6 md:grid-cols-2">
               {users.map((user) => (
                 <UserCard
                   key={user._id}
                   user={user}
                   canManage={isAdmin}
+                  editing={editId === user._id}
+                  onStartEdit={setEditId}
+                  onEndEdit={() => setEditId(null)}
                   onDeleted={handleDeleted}
                   onEdited={handleEdited}
-                  onError={setError}
+                  onError={(msg) => showToast(msg, 'error')}
                 />
               ))}
             </div>
