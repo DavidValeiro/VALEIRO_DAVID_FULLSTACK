@@ -115,9 +115,6 @@ function Login() {
                   />
                 </div>
 
-                <p className="border-t-4 border-slate-950 bg-white px-6 py-3 text-center text-xs font-black tracking-[0.2em] text-slate-500">
-                  Prueba: david.valeiro@example.com / pass123
-                </p>
               </div>
             </div>
 
