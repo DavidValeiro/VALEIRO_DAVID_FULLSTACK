@@ -36,7 +36,7 @@ function Register() {
   }
 
   return (
-    <div className="flex h-full w-full max-w-md flex-col overflow-hidden rounded-4xl border-4 border-slate-950 bg-[#e8f1ff] shadow-[0_18px_40px_rgba(23,32,51,0.25)]">
+    <div className="flex h-full min-h-[860px] w-full max-w-md flex-col overflow-hidden rounded-4xl border-4 border-slate-950 bg-[#e8f1ff] shadow-[0_18px_40px_rgba(23,32,51,0.25)]">
       <div className="flex items-center justify-between border-b-4 border-slate-950 bg-[#2a6ccb] px-6 py-5">
         <div>
           <p className="text-xs font-black uppercase tracking-[0.2em] text-blue-200">Nuevo usuario</p>

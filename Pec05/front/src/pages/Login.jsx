@@ -53,7 +53,7 @@ function Login() {
         <div className="deck-stage relative">
           <div className="grid" style={{ gridTemplateAreas: '"deck"' }}>
             <div className={`deck-card ${flipped ? 'deck-back' : 'deck-front'}`}>
-              <div className="flex h-full w-full max-w-md flex-col overflow-hidden rounded-4xl border-4 border-slate-950 bg-[#fff8e7] shadow-[0_18px_40px_rgba(23,32,51,0.25)]">
+              <div className="flex h-full min-h-[860px] w-full max-w-md flex-col overflow-hidden rounded-4xl border-4 border-slate-950 bg-[#fff8e7] shadow-[0_18px_40px_rgba(23,32,51,0.25)]">
                 <div className="flex items-center justify-between border-b-4 border-slate-950 bg-[#ffcb05] px-6 py-5">
                   <div>
                     <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">PEC05</p>
@@ -63,7 +63,7 @@ function Login() {
                   <span className="rounded-full border-2 border-slate-950 bg-white px-3 py-1 text-sm font-black text-slate-950">login</span>
                 </div>
 
-                <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-6">
+                <form onSubmit={handleSubmit} className="mb-0 flex flex-col gap-4 p-6">
                   <div>
                     <label className="mb-1 block text-xs font-black uppercase tracking-[0.2em] text-slate-500">Email</label>
                     <input
@@ -102,9 +102,9 @@ function Login() {
                   </button>
                 </form>
 
-                <div className="flex min-h-0 flex-1 items-center justify-center overflow-hidden p-6">
+                <div className="min-h-0 flex-1 overflow-hidden">
                   <div
-                    className="aspect-square max-h-full max-w-full rounded-lg shadow-[inset_16px_16px_28px_rgba(23,32,51,0.7),inset_-14px_-14px_24px_rgba(255,255,255,0.4)]"
+                    className="h-full w-full shadow-[inset_16px_16px_28px_rgba(23,32,51,0.7),inset_-14px_-14px_24px_rgba(255,255,255,0.4)]"
                     role="img"
                     aria-label="Charmander aplastado contra el cristal"
                     style={{
