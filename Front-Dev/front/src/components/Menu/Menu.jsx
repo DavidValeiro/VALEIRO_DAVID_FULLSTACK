@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useCart } from "../../context/CartContext";
 
 const defaultNavItems = [
   { label: "Home", href: "#" },
@@ -42,10 +43,10 @@ function Menu({
   navItems = defaultNavItems,
   showCart = true,
   showAccount = true,
-  onCartClick,
   onAccountClick,
 }) {
   const [open, setOpen] = useState(false);
+  const { openCart } = useCart();
 
   const close = () => setOpen(false);
 
@@ -62,7 +63,7 @@ function Menu({
           {showCart && (
             <button
               type="button"
-              onClick={onCartClick}
+              onClick={(e) => openCart(e.currentTarget.getBoundingClientRect())}
               className="material-symbols-outlined text-secondary hover:text-primary transition-all p-base neu-button-raised rounded-full"
               aria-label="Shopping cart"
             >
@@ -90,11 +91,18 @@ function Menu({
         </div>
       </div>
       <nav
-        className="md:hidden bg-surface-container overflow-hidden transition-all duration-300 border-t border-surface-variant/20"
-        style={{ maxHeight: open ? "300px" : "0" }}
+        className={`md:hidden bg-surface-container grid transition-[grid-template-rows] duration-300 ease-in-out motion-reduce:transition-none ${
+          open ? "grid-rows-[1fr] border-t border-surface-variant/20" : "grid-rows-[0fr]"
+        }`}
       >
-        <div className="flex flex-col px-margin-mobile py-sm space-y-xs">
-          <NavLinks items={navItems} onNavigate={close} />
+        <div
+          className={`overflow-hidden min-h-0 transition-opacity duration-300 ${
+            open ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          <div className="flex flex-col px-margin-mobile py-sm space-y-xs">
+            <NavLinks items={navItems} onNavigate={close} />
+          </div>
         </div>
       </nav>
     </header>

@@ -1,4 +1,5 @@
 import { currency } from "../../utils/currency";
+import { useCart } from "../../context/CartContext";
 
 function CartRow({ item, onIncrement, onDecrement, onRemove }) {
   return (
@@ -53,51 +54,62 @@ function CartRow({ item, onIncrement, onDecrement, onRemove }) {
 }
 
 function Buying({
-  open = false,
-  onClose,
-  items = defaultItems,
-  setItems,
-  showOverlay = true,
+  showOverlay = false,
 }) {
-  const increment = (id) =>
-    setItems((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, qty: item.qty + 1 } : item
-      )
-    );
+  const {
+    open,
+    closeCart,
+    anchor,
+    items,
+    increment,
+    decrement,
+    remove,
+    total,
+  } = useCart();
 
-  const decrement = (id) =>
-    setItems((prev) =>
-      prev
-        .map((item) =>
-          item.id === id ? { ...item, qty: Math.max(0, item.qty - 1) } : item
-        )
-        .filter((item) => item.qty > 0)
-    );
-
-  const remove = (id) =>
-    setItems((prev) => prev.filter((item) => item.id !== id));
-
-  const total = items.reduce((sum, item) => sum + item.price * item.qty, 0);
+  const vw = typeof window !== "undefined" ? window.innerWidth : 1200;
+  const top = anchor ? anchor.bottom + 10 : 72;
+  const right = anchor ? Math.max(8, vw - anchor.right) : 24;
 
   return (
     <>
-      {showOverlay && (
+      {showOverlay ? (
         <div
           aria-hidden="true"
-          onClick={onClose}
+          onClick={closeCart}
           className={`fixed inset-0 z-40 bg-black/50 backdrop-blur-sm transition-opacity duration-300 ${
             open ? "opacity-100" : "opacity-0 pointer-events-none"
           }`}
         />
+      ) : (
+        open && (
+          <div aria-hidden="true" onClick={closeCart} className="fixed inset-0 z-40" />
+        )
       )}
 
-      <aside
+      <div
+        role="dialog"
         aria-label="Shopping cart"
-        className={`fixed top-0 right-0 z-50 h-screen w-[min(24rem,100vw)] flex flex-col bg-surface-container shadow-[4px_4px_10px_#000000,-2px_-2px_6px_#2A2A2B] transition-all duration-500 ease-in-out ${
-          open ? "translate-x-0" : "translate-x-full"
+        className={`fixed z-50 flex flex-col overflow-hidden rounded-2xl w-[min(22rem,calc(100vw-1.5rem))] max-h-[calc(100dvh-6rem)] bg-surface-container border border-surface-variant/30 transition-all duration-300 ease-out origin-top-right motion-reduce:transition-none will-change-transform ${
+          open
+            ? "opacity-100 translate-y-0 scale-100"
+            : "opacity-0 translate-y-2 scale-95 pointer-events-none"
         }`}
+        style={{
+          top,
+          right,
+          boxShadow:
+            "8px 10px 28px rgba(0,0,0,0.6), -2px -2px 8px #2A2A2B, 0 0 48px rgba(244,150,56,0.05)",
+        }}
       >
+        {anchor && (
+          <span
+            aria-hidden="true"
+            className="absolute -top-1.5 left-auto h-3 w-3 rotate-45 rounded-[2px] bg-surface-container border-l border-t border-surface-variant/40"
+            style={{ right: `${anchor.width / 2}px` }}
+          />
+        )}
+
         <header className="flex items-center justify-between px-margin-mobile py-md border-b border-surface-variant/40">
           <div className="flex items-center space-x-sm">
             <span className="material-symbols-outlined text-primary">
@@ -114,7 +126,7 @@ function Buying({
           </div>
           <button
             type="button"
-            onClick={onClose}
+            onClick={closeCart}
             className="material-symbols-outlined text-secondary hover:text-primary transition-all p-base neu-button-raised rounded-full"
             aria-label="Close shopping cart"
           >
@@ -123,7 +135,7 @@ function Buying({
         </header>
 
         {items.length === 0 ? (
-          <div className="flex flex-col items-center justify-center flex-1 gap-md px-margin-mobile text-center">
+          <div className="flex flex-col items-center justify-center flex-1 gap-md px-margin-mobile py-lg text-center">
             <span className="material-symbols-outlined text-secondary text-5xl">
               shopping_basket
             </span>
@@ -133,7 +145,7 @@ function Buying({
           </div>
         ) : (
           <>
-            <ul className="flex-1 overflow-y-auto px-margin-mobile py-md space-y-md">
+            <ul className="flex-1 overflow-y-auto px-margin-mobile py-md space-y-md max-h-[60dvh]">
               {items.map((item) => (
                 <CartRow
                   key={item.id}
@@ -163,7 +175,7 @@ function Buying({
             </footer>
           </>
         )}
-      </aside>
+      </div>
     </>
   );
 }
