@@ -1,6 +1,7 @@
-const windowMs = 15 * 1000;
+const RequestLog = require('../models/requestLog');
+
+const windowMs = 1000;
 const maxRequests = 2;
-const ipRequests = new Map();
 
 function getClientIp(req) {
     const xForwardedFor = req.headers['x-forwarded-for'];
@@ -9,20 +10,22 @@ function getClientIp(req) {
         : req.socket?.remoteAddress || req.ip;
 }
 
-function registerRateLimit(req, res, next) {
+async function registerRateLimit(req, res, next) {
     const ip = getClientIp(req);
-    const now = Date.now();
+    const windowStart = new Date(Date.now() - windowMs);
 
-    const timestamps = ipRequests.get(ip) || [];
-    const recent = timestamps.filter(t => now - t < windowMs);
+    try {
+        const count = await RequestLog.countDocuments({ ip, createdAt: { $gte: windowStart } });
 
-    if (recent.length >= maxRequests) {
-        console.log(`[${new Date().toISOString()}] ${ip} - Abuso de registro detectado (${recent.length + 1} peticiones en ${windowMs}ms). Que te den.`);
-        return res.status(429).json({ message: 'Demasiadas solicitudes. Que te den.' });
+        if (count >= maxRequests) {
+            console.log(`[${new Date().toISOString()}] ${ip} - Abuso de registro detectado (${count + 1} peticiones en ${windowMs}ms). Que te den.`);
+            return res.status(429).json({ message: 'Demasiadas solicitudes. Que te den.' });
+        }
+
+        await RequestLog.create({ ip });
+    } catch (err) {
+        console.error('Error en rate limit:', err.message);
     }
-
-    recent.push(now);
-    ipRequests.set(ip, recent);
 
     console.log(`[${new Date().toISOString()}] ${ip} - ${req.method} ${req.originalUrl}`);
     next();
