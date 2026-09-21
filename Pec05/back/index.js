@@ -6,6 +6,7 @@ const { getConnectionInfo } = require('./config/db');
 const userRoutes = require('./routes/users');
 const notFound = require('./middlewares/not-found');
 const errorHandler = require('./middlewares/errorHandler');
+const registerRateLimit = require('./middlewares/registerRateLimit');
 const helmet = require('helmet');
 connectDB();
 
@@ -44,6 +45,7 @@ async function ensureDb(req, res, next) {
 }
 
 app.use(ensureDb);
+app.use(registerRateLimit);
 
 app.use('/users', userRoutes);
 
