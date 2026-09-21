@@ -28,7 +28,7 @@ app.get('/health', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-    res.send('Welcome to the Users API');
+    res.send('Welcome to the API');
 });
 
 async function ensureDb(req, res, next) {

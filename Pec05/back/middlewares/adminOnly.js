@@ -8,7 +8,7 @@ function adminOnly(req, res, next) {
     User.findById(req.user.id)
         .then(user => {
             if (!user) {
-                return res.status(404).json({ message: 'User not found' });
+                return res.status(404).json({ message: 'User or password incorrect' });
             }
             if (!user.is_admin) {
                 return res.status(403).json({ message: 'Forbidden: admin access required' });
