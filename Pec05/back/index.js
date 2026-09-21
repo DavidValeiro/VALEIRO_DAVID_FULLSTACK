@@ -6,7 +6,7 @@ const { getConnectionInfo } = require('./config/db');
 const userRoutes = require('./routes/users');
 const notFound = require('./middlewares/not-found');
 const errorHandler = require('./middlewares/errorHandler');
-
+const helmet = require('helmet');
 connectDB();
 
 const app = express();
@@ -16,6 +16,7 @@ app.use(cors({
     origin: '*',
     credentials: true
 }));
+app.use(helmet());
 app.use(express.json());
 
 app.get('/health', (req, res) => {
