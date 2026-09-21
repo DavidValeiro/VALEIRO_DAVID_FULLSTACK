@@ -29,6 +29,7 @@ function registerUser(req, res) {
                 email,
                 password: hashedPassword,
                 is_admin: false,
+                ip: req.clientIp,
                 pokemon: pokemon || { id: 132, name: 'ditto', shiny: false }
             });
             return newUser.save();
@@ -64,13 +65,13 @@ function loginUser(req, res) {
 }
 
 function getUsers(req, res) {
-    User.find().select('-password')
+    User.find().select('-password -ip')
         .then(users => res.json(users))
         .catch(err => res.status(500).json({ message: err.message }));
 }
 
 function getUserById(req, res) {
-    User.findById(req.params.id).select('-password')
+    User.findById(req.params.id).select('-password -ip')
         .then(user => {   
         if (!user) {
             return res.status(404).json({ message: 'User not found' });

@@ -33,7 +33,6 @@ function register(letra) {
             resolve();
         });
 
-        req.write(body);
         req.end();
     });
 }
