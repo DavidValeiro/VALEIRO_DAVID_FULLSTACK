@@ -1,6 +1,10 @@
 'use client';
 
+import { useState } from 'react';
+
 export default function NameForm() {
+    const [message, setMessage] = useState('');
+
     async function namePost(name) {
         const res = await fetch('/api/names', {
             method: 'POST',
@@ -10,7 +14,11 @@ export default function NameForm() {
             body: JSON.stringify({ name }),
         });
         const result = await res.json();
-        console.log(result);
+        if (res.ok && result.recibido) {
+            setMessage('Nombre enviado correctamente');
+        } else {
+            setMessage('Error al enviar el nombre');
+        }
     }
 
     function handleSubmit(event) {
@@ -28,6 +36,7 @@ export default function NameForm() {
             <input type="text" id="name" name="name" required />
             <button type="submit">Submit</button>
         </form>
+        {message && <p>{message}</p>}
     </div>
     );
 }
