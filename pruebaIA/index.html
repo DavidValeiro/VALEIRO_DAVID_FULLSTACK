@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Day / Night · pruebaIA</title>
+    <script>
+      // Se resuelve el tema antes del primer paint: evita el destello blanco
+      // al recargar en modo noche. Debe ir en <head>, sin defer.
+      ;(() => {
+        try {
+          const stored = localStorage.getItem('prueba-ia:theme')
+          const theme =
+            stored === 'day' || stored === 'night'
+              ? stored
+              : matchMedia('(prefers-color-scheme: dark)').matches
+                ? 'night'
+                : 'day'
+          document.documentElement.dataset.theme = theme
+          document.documentElement.style.colorScheme = theme
+        } catch {
+          /* localStorage bloqueado: nos quedamos con el tema por defecto */
+        }
+      })()
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

@@ -1,0 +1,394 @@
+@import 'tailwindcss';
+
+/* ------------------------------------------------------------------ *
+ * Tokens de tema
+ * Registrados con @property para que el navegador pueda interpolar
+ * cada color: sin esto, cambiar data-theme sería un salto seco.
+ * ------------------------------------------------------------------ */
+@property --bg {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #f4f2ee;
+}
+@property --surface {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #ffffff;
+}
+@property --surface-2 {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #ece8e1;
+}
+@property --text {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #1a1917;
+}
+@property --muted {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #6b6760;
+}
+@property --line {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #e5e1d9;
+}
+@property --accent {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #b8752c;
+}
+@property --accent-soft {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #f2e2cd;
+}
+@property --glow {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: rgba(184, 117, 44, 0.1);
+}
+@property --knob-offset {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 0px;
+}
+
+/* Expone los tokens como utilidades de Tailwind (bg-surface, text-muted…). */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --shadow-soft: var(--shadow-card);
+}
+
+:root {
+  --ease-theme: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.3, 0.5, 1);
+  --theme-duration: 620ms;
+  --theme-fade: 220ms;
+
+  /* Origen del revelado circular; lo sobrescribe useTheme en cada cambio. */
+  --vt-x: 50%;
+  --vt-y: 50%;
+
+  --bg: #f4f2ee;
+  --surface: #ffffff;
+  --surface-2: #ece8e1;
+  --text: #1a1917;
+  --muted: #6b6760;
+  --line: #e5e1d9;
+  --accent: #b8752c;
+  --accent-soft: #f2e2cd;
+  --glow: rgba(184, 117, 44, 0.1);
+  --shadow-card: 0 1px 2px rgba(26, 25, 23, 0.04), 0 14px 34px -14px rgba(26, 25, 23, 0.14);
+
+  color-scheme: light;
+
+  transition:
+    --bg var(--theme-duration) var(--ease-theme),
+    --surface var(--theme-duration) var(--ease-theme),
+    --surface-2 var(--theme-duration) var(--ease-theme),
+    --text var(--theme-duration) var(--ease-theme),
+    --muted var(--theme-duration) var(--ease-theme),
+    --line var(--theme-duration) var(--ease-theme),
+    --accent var(--theme-duration) var(--ease-theme),
+    --accent-soft var(--theme-duration) var(--ease-theme),
+    --glow var(--theme-duration) var(--ease-theme),
+    --knob-offset var(--theme-duration) var(--ease-spring);
+}
+
+:root[data-theme='night'] {
+  --bg: #11141a;
+  --surface: #191e28;
+  --surface-2: #232936;
+  --text: #edf0f5;
+  --muted: #97a0b4;
+  --line: #2b3240;
+  --accent: #e2a55c;
+  --accent-soft: #3a2f1e;
+  --glow: rgba(226, 165, 92, 0.12);
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.34), 0 20px 44px -18px rgba(0, 0, 0, 0.62);
+
+  --knob-offset: 24px;
+
+  color-scheme: dark;
+}
+
+@layer base {
+  html {
+    background-color: var(--bg);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--text);
+  }
+
+  ::selection {
+    background-color: var(--accent-soft);
+    color: var(--text);
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Utilidades de tema
+ * Cada una pinta su token y declara la transición, para que ningún
+ * elemento se quede con un salto seco en el fallback sin View Transitions.
+ * ------------------------------------------------------------------ */
+@layer components {
+  .theme-text {
+    color: var(--text);
+    transition: color var(--theme-duration) var(--ease-theme);
+  }
+  .theme-muted {
+    color: var(--muted);
+    transition: color var(--theme-duration) var(--ease-theme);
+  }
+  .theme-accent {
+    color: var(--accent);
+    transition: color var(--theme-duration) var(--ease-theme);
+  }
+  .theme-surface {
+    background-color: var(--surface);
+    border-color: var(--line);
+    box-shadow: var(--shadow-card);
+    transition:
+      background-color var(--theme-duration) var(--ease-theme),
+      border-color var(--theme-duration) var(--ease-theme),
+      box-shadow var(--theme-duration) var(--ease-theme);
+  }
+  .theme-surface-2 {
+    background-color: var(--surface-2);
+    border-color: var(--line);
+    transition:
+      background-color var(--theme-duration) var(--ease-theme),
+      border-color var(--theme-duration) var(--ease-theme);
+  }
+  .theme-border {
+    border-color: var(--line);
+    transition: border-color var(--theme-duration) var(--ease-theme);
+  }
+  .theme-accent-soft {
+    background-color: var(--accent-soft);
+    transition: background-color var(--theme-duration) var(--ease-theme);
+  }
+  .theme-glow {
+    background: radial-gradient(58% 58% at 50% 0%, var(--glow), transparent 72%);
+  }
+
+  .theme-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 9999px;
+    border: 1px solid var(--line);
+    background-color: var(--surface);
+    color: var(--text);
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    outline: none;
+    transition:
+      background-color var(--theme-duration) var(--ease-theme),
+      border-color var(--theme-duration) var(--ease-theme),
+      color var(--theme-duration) var(--ease-theme),
+      transform 200ms var(--ease-spring);
+  }
+  .theme-btn:hover {
+    background-color: var(--surface-2);
+  }
+  .theme-btn:active {
+    transform: scale(0.97);
+  }
+  .theme-btn:focus-visible {
+    box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--accent);
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * ThemeToggle
+ * ------------------------------------------------------------------ */
+.theme-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: 2rem;
+  width: 3.5rem;
+  flex: none;
+  border-radius: 9999px;
+  border: 1px solid var(--line);
+  background-color: var(--surface-2);
+  cursor: pointer;
+  padding: 0;
+  outline: none;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition:
+    background-color var(--theme-duration) var(--ease-theme),
+    border-color var(--theme-duration) var(--ease-theme),
+    box-shadow 200ms var(--ease-theme);
+}
+.theme-toggle:focus-visible {
+  box-shadow:
+    0 0 0 2px var(--bg),
+    0 0 0 4px var(--accent);
+}
+
+.theme-toggle__knob {
+  position: absolute;
+  top: 50%;
+  left: 4px;
+  z-index: 1;
+  display: grid;
+  height: 1.5rem;
+  width: 1.5rem;
+  place-items: center;
+  border-radius: 9999px;
+  background-color: var(--surface);
+  color: var(--accent);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), 0 4px 10px -4px rgba(0, 0, 0, 0.28);
+  transform: translateY(-50%) translateX(var(--knob-offset));
+  transition:
+    transform var(--theme-duration) var(--ease-spring),
+    background-color var(--theme-duration) var(--ease-theme),
+    color var(--theme-duration) var(--ease-theme),
+    box-shadow var(--theme-duration) var(--ease-theme);
+}
+
+.theme-toggle__outer {
+  position: absolute;
+  top: 50%;
+  z-index: 0;
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  pointer-events: none;
+  transform: translateY(-50%);
+  transition:
+    color var(--theme-duration) var(--ease-theme),
+    left var(--theme-duration) var(--ease-spring),
+    right var(--theme-duration) var(--ease-spring);
+}
+.theme-toggle[data-night='false'] .theme-toggle__outer {
+  right: 9px;
+}
+.theme-toggle[data-night='true'] .theme-toggle__outer {
+  left: 9px;
+}
+
+/* Los dos glifos están siempre montados y se apilan en la misma celda.
+ * Cuál se ve lo decide [data-night], que se escribe de forma imperativa
+ * antes de capturar el snapshot: si dependiera de React, el snapshot
+ * "nuevo" saldría todavía con el icono viejo. */
+.theme-toggle__glyph {
+  grid-area: 1 / 1;
+  display: block;
+  opacity: 0;
+  transition: opacity 240ms var(--ease-theme);
+}
+.theme-toggle[data-night='false'] .theme-toggle__knob [data-glyph='sun'],
+.theme-toggle[data-night='true'] .theme-toggle__knob [data-glyph='moon'],
+.theme-toggle[data-night='true'] .theme-toggle__outer [data-glyph='sun'],
+.theme-toggle[data-night='false'] .theme-toggle__outer [data-glyph='moon'] {
+  opacity: 1;
+}
+
+/* Sólo el primer toggle montado se registra en las View Transitions:
+ * los view-transition-name tienen que ser únicos en el documento. */
+.theme-toggle[data-vt-owner='true'] .theme-toggle__knob {
+  view-transition-name: theme-knob;
+}
+.theme-toggle[data-vt-owner='true'] .theme-toggle__outer {
+  view-transition-name: theme-icon;
+}
+
+/* ------------------------------------------------------------------ *
+ * View Transitions
+ * ------------------------------------------------------------------ */
+@keyframes theme-reveal {
+  from {
+    clip-path: circle(0% at var(--vt-x) var(--vt-y));
+  }
+  to {
+    clip-path: circle(150% at var(--vt-x) var(--vt-y));
+  }
+}
+@keyframes theme-knob-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes theme-knob-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* root: el estado viejo se queda quieto debajo y el nuevo se revela
+   * encima con un clip circular desde el botón. Sin cross-fade, así que
+   * no hay momento "sucio" a mitad de transición. */
+  ::view-transition-old(root) {
+    animation: none;
+    mix-blend-mode: normal;
+  }
+  ::view-transition-new(root) {
+    animation: theme-reveal var(--theme-duration) var(--ease-theme) both;
+    mix-blend-mode: normal;
+  }
+
+  /* knob e icon: el grupo ya los desplaza solos (mismo tamaño en ambos
+   * estados); sólo hay que cross-fadear el contenido. */
+  ::view-transition-group(theme-knob),
+  ::view-transition-group(theme-icon) {
+    animation-duration: var(--theme-duration);
+    animation-timing-function: var(--ease-spring);
+  }
+  ::view-transition-old(theme-knob),
+  ::view-transition-old(theme-icon) {
+    animation: theme-knob-out var(--theme-fade) linear both;
+  }
+  ::view-transition-new(theme-knob),
+  ::view-transition-new(theme-icon) {
+    animation: theme-knob-in 300ms var(--ease-theme) both;
+  }
+}
+
+/* Mientras dura la transición hay que desactivar las transiciones CSS:
+ * si no, el snapshot "nuevo" se captura a medio camino de los colores. */
+html.vt-active,
+html.vt-active * {
+  transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    transition: none;
+  }
+  *,
+  ::before,
+  ::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
