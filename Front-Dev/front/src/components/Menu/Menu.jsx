@@ -1,10 +1,13 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
+import Buying from "../Buying/Buying";
+import CartToast from "../CartToast/CartToast";
 
 const defaultNavItems = [
   { label: "Home", href: "#" },
-  { label: "Catálogo", href: "#" },
-  { label: "Añadir Producto", href: "#", active: true },
+  { label: "Catálogo", to: "/", active: true },
+  { label: "Añadir Producto", href: "#" },
 ];
 
 function NavLinks({ items, onNavigate }) {
@@ -14,14 +17,27 @@ function NavLinks({ items, onNavigate }) {
 
     if (item.active) {
       return (
-        <a
+        <Link
           key={index}
           className={`${baseClasses} text-primary font-bold border-b-2 border-primary transition-all`}
-          href={item.href}
+          to={item.to}
           onClick={onNavigate}
         >
           {item.label}
-        </a>
+        </Link>
+      );
+    }
+
+    if (item.to) {
+      return (
+        <Link
+          key={index}
+          className={`${baseClasses} text-secondary hover:text-primary-fixed-dim`}
+          to={item.to}
+          onClick={onNavigate}
+        >
+          {item.label}
+        </Link>
       );
     }
 
@@ -46,7 +62,7 @@ function Menu({
   onAccountClick,
 }) {
   const [open, setOpen] = useState(false);
-  const { openCart } = useCart();
+  const { openCart, items, lastAdded } = useCart();
 
   const close = () => setOpen(false);
 
@@ -61,14 +77,34 @@ function Menu({
         </nav>
         <div className="flex items-center space-x-md">
           {showCart && (
-            <button
-              type="button"
-              onClick={(e) => openCart(e.currentTarget.getBoundingClientRect())}
-              className="material-symbols-outlined text-secondary hover:text-primary transition-all p-base neu-button-raised rounded-full"
-              aria-label="Shopping cart"
-            >
-              shopping_cart
-            </button>
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => openCart()}
+                className="p-base neu-button-raised rounded-full text-secondary hover:text-primary transition-all"
+                aria-label={
+                  items.length > 0
+                    ? `Shopping cart, ${items.length} artículos`
+                    : "Shopping cart"
+                }
+              >
+                <span
+                  key={lastAdded?.seq ?? 0}
+                  className={`material-symbols-outlined block ${
+                    lastAdded ? "animate-cart-bump" : ""
+                  }`}
+                >
+                  shopping_cart
+                </span>
+                {items.length > 0 && (
+                  <span className="buying-count absolute -top-0.5 -right-0.5">
+                    {items.length}
+                  </span>
+                )}
+              </button>
+              <Buying />
+              <CartToast />
+            </div>
           )}
           {showAccount && (
             <button

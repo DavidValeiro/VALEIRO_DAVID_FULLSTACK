@@ -1,14 +1,24 @@
-import Menu from './components/Menu/Menu'
-import Buying from './components/Buying/Buying'
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Layout from './components/Layout/Layout'
 import Cataloge from './pages/Cataloge'
+import ProductDetail from './pages/ProductDetail'
 import {CartProvider} from './context/CartContext'
+
+const router = createBrowserRouter([
+  {
+    element: <Layout />,
+    children: [
+      { path: "/", element: <Cataloge /> },
+      { path: "/producto/:id", element: <ProductDetail /> },
+    ],
+  },
+])
+
 function App() {
   return (
     <>
-    <CartProvider>  
-      <Menu />
-      <Cataloge />
-      <Buying />
+    <CartProvider>
+      <RouterProvider router={router} />
     </CartProvider>
     </>
   )

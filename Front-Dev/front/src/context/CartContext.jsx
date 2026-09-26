@@ -1,6 +1,7 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
 
 const STORAGE_KEY = "buying-cart";
+const ADD_FEEDBACK_MS = 2600;
 
 const CartContext = createContext(null);
 
@@ -24,13 +25,24 @@ const writeStorage = (items) => {
 export function CartProvider({ children }) {
   const [items, setItems] = useState(readStorage);
   const [open, setOpen] = useState(false);
-  const [anchor, setAnchor] = useState(null);
+  const [lastAdded, setLastAdded] = useState(null);
+  const addSeq = useRef(0);
 
   useEffect(() => {
     writeStorage(items);
   }, [items]);
 
+  useEffect(() => {
+    if (!lastAdded) return;
+
+    const timer = setTimeout(() => setLastAdded(null), ADD_FEEDBACK_MS);
+    return () => clearTimeout(timer);
+  }, [lastAdded]);
+
   const addToCart = (product) => {
+    addSeq.current += 1;
+    setLastAdded({ seq: addSeq.current, product });
+
     setItems((prev) => {
       const existing = prev.find((item) => item.id === product.id);
       if (existing) {
@@ -69,10 +81,7 @@ export function CartProvider({ children }) {
   const remove = (id) =>
     setItems((prev) => prev.filter((item) => item.id !== id));
 
-  const openCart = (rect) => {
-    setAnchor(rect ?? null);
-    setOpen(true);
-  };
+  const openCart = () => setOpen(true);
 
   const closeCart = () => setOpen(false);
 
@@ -85,8 +94,8 @@ export function CartProvider({ children }) {
     () => ({
       items,
       open,
-      anchor,
       total,
+      lastAdded,
       addToCart,
       increment,
       decrement,
@@ -94,7 +103,7 @@ export function CartProvider({ children }) {
       openCart,
       closeCart,
     }),
-    [items, open, anchor, total]
+    [items, open, total, lastAdded]
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

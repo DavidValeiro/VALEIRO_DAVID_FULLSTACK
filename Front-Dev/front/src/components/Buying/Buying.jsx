@@ -53,23 +53,16 @@ function CartRow({ item, onIncrement, onDecrement, onRemove }) {
   );
 }
 
-function Buying({
-  showOverlay = false,
-}) {
+function Buying({ showOverlay = false }) {
   const {
     open,
     closeCart,
-    anchor,
     items,
     increment,
     decrement,
     remove,
     total,
   } = useCart();
-
-  const vw = typeof window !== "undefined" ? window.innerWidth : 1200;
-  const top = anchor ? anchor.bottom + 10 : 72;
-  const right = anchor ? Math.max(8, vw - anchor.right) : 24;
 
   return (
     <>
@@ -90,34 +83,30 @@ function Buying({
       <div
         role="dialog"
         aria-label="Shopping cart"
-        className={`fixed z-50 flex flex-col overflow-hidden rounded-2xl w-[min(22rem,calc(100vw-1.5rem))] max-h-[calc(100dvh-6rem)] bg-surface-container border border-surface-variant/30 transition-all duration-300 ease-out origin-top-right motion-reduce:transition-none will-change-transform ${
+        className={`absolute top-full right-0 mt-2.5 z-50 flex flex-col overflow-hidden rounded-2xl w-[min(22rem,calc(100vw-1.5rem))] max-h-[calc(100dvh-6rem)] bg-surface-container border border-surface-variant/30 transition-all duration-300 ease-out origin-top-right motion-reduce:transition-none max-sm:fixed max-sm:left-3 max-sm:right-3 max-sm:top-[6.5rem] max-sm:mt-0 max-sm:w-[calc(100vw-1.5rem)] ${
           open
             ? "opacity-100 translate-y-0 scale-100"
             : "opacity-0 translate-y-2 scale-95 pointer-events-none"
         }`}
         style={{
-          top,
-          right,
           boxShadow:
             "8px 10px 28px rgba(0,0,0,0.6), -2px -2px 8px #2A2A2B, 0 0 48px rgba(244,150,56,0.05)",
         }}
       >
-        {anchor && (
-          <span
-            aria-hidden="true"
-            className="absolute -top-1.5 left-auto h-3 w-3 rotate-45 rounded-[2px] bg-surface-container border-l border-t border-surface-variant/40"
-            style={{ right: `${anchor.width / 2}px` }}
-          />
-        )}
+        {/* 6.5rem = alto del header; por debajo de sm el panel se ancla a la pantalla, no al boton */}
+        <span
+          aria-hidden="true"
+          className="absolute -top-1.5 right-5 h-3 w-3 rotate-45 rounded-[2px] bg-surface-container border-l border-t border-surface-variant/40 max-sm:hidden"
+        />
 
         <header className="flex items-center justify-between px-margin-mobile py-md border-b border-surface-variant/40">
           <div className="flex items-center space-x-sm">
             <span className="material-symbols-outlined text-primary">
               shopping_cart
             </span>
-            <h2 className="font-headline-md text-headline-md text-on-background">
+            <p className="font-headline-md text-headline-md text-on-background">
               Carrito
-            </h2>
+            </p>
             {items.length > 0 && (
               <span className="font-label-sm text-label-sm text-on-primary bg-primary rounded-full px-sm py-xs">
                 {items.length}
