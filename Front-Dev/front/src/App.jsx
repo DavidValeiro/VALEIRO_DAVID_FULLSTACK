@@ -1,15 +1,21 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from './components/Layout/Layout'
-import Cataloge from './pages/Cataloge'
-import ProductDetail from './pages/ProductDetail'
+import Catalog from './pages/Catalog'
+import Manage from './pages/Manage'
+import Home from './pages/Home'
+import ProductDetail from './components/ProductDetail/ProductDetail'
 import {CartProvider} from './context/CartContext'
+import {ProductProvider} from './context/ProductContext'
+import {CurrencyProvider} from './context/CurrencyContext'
 
 const router = createBrowserRouter([
   {
     element: <Layout />,
     children: [
-      { path: "/", element: <Cataloge /> },
-      { path: "/producto/:id", element: <ProductDetail /> },
+      { path: "/", element: <Home /> },
+      { path: "/Catalog", element: <Catalog /> },
+      { path: "/Producto/:slug", element: <ProductDetail /> },
+      { path: "/Manage", element: <Manage /> },
     ],
   },
 ])
@@ -17,9 +23,13 @@ const router = createBrowserRouter([
 function App() {
   return (
     <>
-    <CartProvider>
-      <RouterProvider router={router} />
-    </CartProvider>
+    <CurrencyProvider>
+    <ProductProvider>
+      <CartProvider>
+        <RouterProvider router={router} />
+      </CartProvider>
+    </ProductProvider>
+    </CurrencyProvider>
     </>
   )
 }

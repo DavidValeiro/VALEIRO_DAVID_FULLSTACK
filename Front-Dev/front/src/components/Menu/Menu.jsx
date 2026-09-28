@@ -1,21 +1,23 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
+import { useCurrency } from "../../context/CurrencyContext";
 import Buying from "../Buying/Buying";
 import CartToast from "../CartToast/CartToast";
 
 const defaultNavItems = [
-  { label: "Home", href: "#" },
-  { label: "Catálogo", to: "/", active: true },
-  { label: "Añadir Producto", href: "#" },
+  { label: "Home", to: "/" },
+  { label: "Catálogo", to: "/Catalog" },
+  { label: "Administración", to: "/Manage" },
 ];
 
-function NavLinks({ items, onNavigate }) {
+function NavLinks({ items, onNavigate, pathname }) {
   return items.map((item, index) => {
     const baseClasses =
       "font-body-md text-body-md transition-colors duration-300 py-1";
+    const isActive = item.to && pathname === item.to;
 
-    if (item.active) {
+    if (isActive) {
       return (
         <Link
           key={index}
@@ -63,6 +65,8 @@ function Menu({
 }) {
   const [open, setOpen] = useState(false);
   const { openCart, items, lastAdded } = useCart();
+  const { pathname } = useLocation();
+  const { currencyCode, setCurrencyCode, options } = useCurrency();
 
   const close = () => setOpen(false);
 
@@ -73,9 +77,23 @@ function Menu({
           {brand}
         </div>
         <nav className="hidden md:flex items-center space-x-lg">
-          <NavLinks items={navItems} />
+          <NavLinks items={navItems} pathname={pathname} />
         </nav>
         <div className="flex items-center space-x-md">
+          <label className="hidden sm:flex items-center">
+            <span className="sr-only">Moneda</span>
+            <select
+              value={currencyCode}
+              onChange={(event) => setCurrencyCode(event.target.value)}
+              className="neu-button-raised rounded-full bg-background text-secondary font-body-md text-body-md px-sm py-xs appearance-none cursor-pointer hover:text-primary transition-all"
+            >
+              {options.map((option) => (
+                <option key={option.code} value={option.code}>
+                  {option.code}
+                </option>
+              ))}
+            </select>
+          </label>
           {showCart && (
             <div className="relative">
               <button
@@ -137,7 +155,7 @@ function Menu({
           }`}
         >
           <div className="flex flex-col px-margin-mobile py-sm space-y-xs">
-            <NavLinks items={navItems} onNavigate={close} />
+            <NavLinks items={navItems} onNavigate={close} pathname={pathname} />
           </div>
         </div>
       </nav>

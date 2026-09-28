@@ -1,7 +1,7 @@
 @import 'tailwindcss';
 
 body {
-  font-family: 'Hanken Grotesk', sans-serif;
+  font-family: 'Nunito Sans', sans-serif;
   background-color: #131314;
   color: #e5e2e3;
 }

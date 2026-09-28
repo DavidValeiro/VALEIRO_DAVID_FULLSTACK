@@ -1,7 +1,9 @@
-import { currency } from "../../utils/currency";
 import { useCart } from "../../context/CartContext";
+import { useCurrency } from "../../context/CurrencyContext";
 
 function CartRow({ item, onIncrement, onDecrement, onRemove }) {
+  const { format } = useCurrency();
+
   return (
     <li className="buying-row neu-flat rounded-xl px-margin-mobile py-md flex flex-col gap-sm">
       <div className="flex items-center justify-between gap-md">
@@ -20,7 +22,7 @@ function CartRow({ item, onIncrement, onDecrement, onRemove }) {
 
       <div className="flex items-center justify-between gap-md">
         <span className="font-label-sm text-label-sm text-secondary uppercase shrink-0">
-          {currency(item.price)}
+          {format(item.price)}
         </span>
 
         <div className="flex items-center neu-pressed rounded-full shrink-0">
@@ -46,7 +48,7 @@ function CartRow({ item, onIncrement, onDecrement, onRemove }) {
         </div>
 
         <span className="font-body-md text-body-md text-primary shrink-0">
-          {currency(item.price * item.qty)}
+          {format(item.price * item.qty)}
         </span>
       </div>
     </li>
@@ -63,6 +65,7 @@ function Buying({ showOverlay = false }) {
     remove,
     total,
   } = useCart();
+  const { format } = useCurrency();
 
   return (
     <>
@@ -93,7 +96,6 @@ function Buying({ showOverlay = false }) {
             "8px 10px 28px rgba(0,0,0,0.6), -2px -2px 8px #2A2A2B, 0 0 48px rgba(244,150,56,0.05)",
         }}
       >
-        {/* 6.5rem = alto del header; por debajo de sm el panel se ancla a la pantalla, no al boton */}
         <span
           aria-hidden="true"
           className="absolute -top-1.5 right-5 h-3 w-3 rotate-45 rounded-[2px] bg-surface-container border-l border-t border-surface-variant/40 max-sm:hidden"
@@ -152,14 +154,17 @@ function Buying({ showOverlay = false }) {
                   Total
                 </span>
                 <span className="font-display-lg text-display-lg text-primary font-bold">
-                  {currency(total)}
+                  {format(total)}
                 </span>
               </div>
               <button
                 type="button"
-                className="material-symbols-outlined font-body-md text-body-md text-on-primary bg-primary hover:bg-primary-fixed-dim transition-all py-md rounded-full"
+                className="font-body-md text-body-md text-on-primary bg-primary hover:bg-primary-fixed-dim transition-all py-md rounded-full flex items-center justify-center gap-xs uppercase tracking-wider font-bold"
               >
-                Comprar
+                <span aria-hidden="true" className="material-symbols-outlined">
+                  shopping_cart
+                </span>
+                <span>Comprar</span>
               </button>
             </footer>
           </>
