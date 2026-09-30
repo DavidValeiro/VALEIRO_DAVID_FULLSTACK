@@ -72,7 +72,7 @@ function Menu({
 
   return (
     <header className="w-full top-0 sticky z-50 bg-background shadow-[4px_4px_10px_#000000,-2px_-2px_6px_#2A2A2B]">
-      <div className="flex w-full justify-between items-center w-full px-margin-desktop py-md">
+      <div className="flex w-full justify-between items-center px-margin-desktop py-md">
         <div className="font-display-lg text-display-lg font-bold tracking-tighter text-primary">
           {brand}
         </div>
