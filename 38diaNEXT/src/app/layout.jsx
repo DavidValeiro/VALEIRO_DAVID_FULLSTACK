@@ -3,8 +3,9 @@ import { AuthProvider } from '@/context/AuthContext';
 import Navbar from '@/components/Navbar';
 
 export const metadata = {
-  title: '38diaNEXT',
-  description: 'Publicaciones y comentarios sobre la API 38dia, hechos con Next.js'
+  title: 'PostDex',
+  description: 'PostDex es una red social para compartir publicaciones y comentarios sobre Pokémon.',
+  favicon: '/favicon.svg',
 };
 
 export default function RootLayout({ children }) {
